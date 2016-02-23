@@ -1,22 +1,23 @@
 package evaluation;
 
-import math.StatisticsHelper;
+import math.StatisticsPresenter;
 import model.UserCollection;
 
 /**
- * Evalutor provides bundles of information about the data
+ * Evaluator provides bundles of information about the data
  */
 public class Evaluator {
 
     private final UserCollection USER_COLLECTION;
+    private final StatisticsPresenter statisticsPresenter;
 
     public Evaluator(UserCollection userCollection) {
         USER_COLLECTION = userCollection;
+        this.statisticsPresenter = new StatisticsPresenter();
     }
 
-    public void performFullEvaluation() {
-        System.out.println("*******************************");
-        System.out.println("Starting evaluation of the data");
+    public void performBasicEvaluation() {
+        System.out.println("Starting basic evaluation of the data");
 
         long start = System.currentTimeMillis();
 
@@ -31,84 +32,79 @@ public class Evaluator {
 
         long end = System.currentTimeMillis() - start;
 
-        System.out.println("Evaluator completed in " + end + " seconds");
+        System.out.println("Evaluator completed in " + end + " miliseconds");
         System.out.println("*******************************");
 
     }
 
     /**
-     * Full statistical evaluation of the dataset for a given user
-     * @param userId
+     * Full statistical evaluation of the dataset for users
      */
-    public void performFullEvaluationForUser(String userId) {
-        System.out.println("*******************************");
-        System.out.println("Starting evaluation of the data for user  " + userId);
+    public void performFullStatisticalEvaluationForUsers() {
+        System.out.println("Starting statistical evaluation");
 
         long start = System.currentTimeMillis();
-        System.out.println("Minimum rating user " + userId + " gave: "
-                + StatisticsHelper.minRatingPerUser(userId, USER_COLLECTION));
+        System.out.println("Minimum ratings count for users: "
+                + statisticsPresenter.getMininumRatingCountForUsers(USER_COLLECTION));
 
-        System.out.println("Maximum rating user " + userId + " gave: "
-                + StatisticsHelper.maxRatingPerUser(userId, USER_COLLECTION));
+        System.out.println("Maximum ratings count for users: "
+                + statisticsPresenter.getMaxinumRatingCountForUsers(USER_COLLECTION));
 
-        System.out.println("Mean of ratings given by user " + userId + " : "
-                + StatisticsHelper.meanOfRatingsPerUser(userId, USER_COLLECTION));
+        System.out.println("Mean of ratings count for users: "
+                + statisticsPresenter.getMeanRatingCountForUsers(USER_COLLECTION));
 
-        System.out.println("Median of ratings given by user " + userId + " : "
-                + StatisticsHelper.medianOfRatingsPerUser(userId, USER_COLLECTION));
+        System.out.println("Median of ratings count for users: "
+                + statisticsPresenter.getMedianRatingCountForUsers(USER_COLLECTION));
 
-        System.out.println("Standard deviation of ratings given by user " + userId + " : "
-                + StatisticsHelper.standardDeviationOfRatingsPerUser(userId, USER_COLLECTION));
+        System.out.println("Standard deviation of ratings count for users: "
+                + statisticsPresenter.getStandardDeviationRatingCountForUsers(USER_COLLECTION));
 
         long end = System.currentTimeMillis() - start;
 
-        System.out.println("Evaluator completed in " + end + " seconds");
+        System.out.println("Evaluator completed in " + end + " miliseconds");
         System.out.println("*******************************");
 
     }
 
     /**
-     * Full statistical evaluation of the dataset for a given movie
-     * @param movieId
+     * Full statistical evaluation of the dataset for items
      */
-    public void performFullEvaluationForItem(String movieId) {
-        System.out.println("*******************************");
-        System.out.println("Starting evaluation of the data for user  "+movieId);
+    public void performFullStatisticalEvaluationForItems() {
+        System.out.println("Starting evaluation of the data for items");
 
         long start = System.currentTimeMillis();
-        System.out.println("Minimum rating for movie " + movieId + " : "
-                + StatisticsHelper.minRatingPerMovie(movieId, USER_COLLECTION));
+        System.out.println("Minimum ratings count for items: "
+                + statisticsPresenter.getMinimumRatingCountForItems(USER_COLLECTION));
 
-        System.out.println("Maximum rating for movie " + movieId + " : "
-                + StatisticsHelper.maxRatingPerMovie(movieId, USER_COLLECTION));
+        System.out.println("Maximum ratings count for items: "
+                + statisticsPresenter.getMaximumRatingCountForItems(USER_COLLECTION));
 
-        System.out.println("Mean of ratings given by users for " + movieId + " : "
-                + StatisticsHelper.meanOfRatingsPerItem(movieId, USER_COLLECTION));
+        System.out.println("Mean of ratings count for items: "
+                + statisticsPresenter.getMeanRatingCountForItems(USER_COLLECTION));
 
-        System.out.println("Median of ratings given by users for " + movieId + " : "
-                + StatisticsHelper.medianfRatingsPerItem(movieId, USER_COLLECTION));
+        System.out.println("Median of ratings count for items: "
+                + statisticsPresenter.getMedianRatingCountForItems(USER_COLLECTION));
 
-        System.out.println("Standard deviation of ratings given by users for " + movieId + " : "
-                + StatisticsHelper.standardDeviationOfRatingsPerItem(movieId, USER_COLLECTION));
+        System.out.println("Standard deviation of ratings count for items: "
+                + statisticsPresenter.getStandardDeviationRatingCountForItems(USER_COLLECTION));
 
         long end = System.currentTimeMillis() - start;
 
-        System.out.println("Evaluator completed in " + end + " seconds");
+        System.out.println("Evaluator completed in " + end + " miliseconds");
         System.out.println("*******************************");
 
     }
 
     public void displayDensityValueForDataset() {
-        System.out.println("*******************************");
         System.out.println("Starting evaluation of the data");
 
         long start = System.currentTimeMillis();
 
-        System.out.println("The denstity value is " + StatisticsHelper.ratingsDensityMetric(USER_COLLECTION));
+        System.out.println("The density value is " + statisticsPresenter.getRatingsDensityMetric(USER_COLLECTION));
 
         long end = System.currentTimeMillis() - start;
 
-        System.out.println("Evaluator completed in " + end + " seconds");
+        System.out.println("Evaluator completed in " + end + " miliseconds");
         System.out.println("*******************************");
     }
 

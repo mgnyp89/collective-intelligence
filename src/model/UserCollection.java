@@ -1,15 +1,12 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
-/**
- * Created by mon on 17/02/16.
- */
 public class UserCollection {
 
     /**
@@ -17,12 +14,21 @@ public class UserCollection {
      * <userId, Map<movieId, movieRating>> where movieRating contains rating and timestamp
      */
     private Map<String, RecordCollection> userCollection;
+    // <movie_id, List<Rating> associated with the movie>
     private Map<String, List<Rating>> movieCollection;
+    // <number of ratings given by the user>
+    private List<Integer> ratingsDistributionPerUser;
+    // <number of ratings given to the item>
+    private List<Integer> ratingsDistributionPerItem;
+    private List<Rating> allRatings;
     private int[] ratingClasses = null;
 
     public UserCollection() {
         this.userCollection = new HashMap<>();
         this.movieCollection = new HashMap<>();
+        this.ratingsDistributionPerUser = null;
+        this.ratingsDistributionPerItem = null;
+        this.allRatings = new ArrayList<>();
     }
 
     /**
@@ -36,6 +42,8 @@ public class UserCollection {
      * @param rating movie rating (numeric rating + timestamp)
      */
     public void addRecord(String userId, String movieId, Rating rating) {
+
+        allRatings.add(rating);
 
         if (movieCollection.containsKey(movieId)) {
             movieCollection.get(movieId).add(rating);
@@ -57,15 +65,6 @@ public class UserCollection {
 
     /**
      *
-     * @param userId
-     * @return all ratings for the user
-     */
-    public RecordCollection getRatingsForUser(String userId) {
-        return userCollection.get(userId);
-    }
-
-    /**
-     *
      * @return number of users with present records in the collection
      */
     public int getUsersCount() {
@@ -77,13 +76,7 @@ public class UserCollection {
     }
 
     public int getTotalRatingsCount() {
-        int totalRatingsCount = 0;
-
-        for(List<Rating> movieRatings : movieCollection.values()) {
-            totalRatingsCount += movieRatings.size();
-        }
-
-        return totalRatingsCount;
+        return movieCollection.values().stream().mapToInt(value -> value.size()).sum();
     }
 
     public int getRatingCountForRatingClass(int ratingClass) {
@@ -102,5 +95,21 @@ public class UserCollection {
 
     public List<Rating> getRatingCollectionForMovie(String movieId) {
         return movieCollection.get(movieId);
+    }
+
+    public List<Integer> getRatingsDistributionPerUser() {
+        if (ratingsDistributionPerUser == null) {
+            ratingsDistributionPerUser = userCollection.values().stream().map(RecordCollection::getRatingsCount)
+                    .collect(Collectors.toList());
+        }
+        return ratingsDistributionPerUser;
+    }
+
+    public List<Integer> getRatingsDistributionPerItem() {
+        if (ratingsDistributionPerItem == null) {
+            ratingsDistributionPerItem = movieCollection.values().stream().map(Collection::size)
+                    .collect(Collectors.toList());
+        }
+        return ratingsDistributionPerItem;
     }
 }

@@ -27,7 +27,9 @@ All tests are in ./tst, they depend on junit
 
 3) You can also compile from commandline (javac *.java from the top directory recursively) and run main.
 
-## Expected output:
+## Expected output will change from week to week:
+
+  WEEK 1: data written to standard output
 
   Loading the data
   Loaded dataset movies
@@ -64,3 +66,36 @@ All tests are in ./tst, they depend on junit
   The density value is 0.06304669364224531
   Evaluator completed in 1 miliseconds
   *******************************
+
+  WEEK 2: data written to standard output + a .cvs file with all predictions (in the ./resources)
+
+  Loading the data
+  Loaded dataset movies
+  *******************************
+  Starting evaluation
+  Running test No. 1
+  Leave One Out Test completed in 2.214 seconds
+  The average RMSE is: 0.1649
+  1586126.0
+  The coverage value is: 99.9912 %
+  *******************************
+  Starting run time evaluation
+  Running test No. 2
+  Leave One Out Test completed in 1.721 seconds
+  Running test No. 3
+  Leave One Out Test completed in 1.558 seconds
+  Running test No. 4
+  Leave One Out Test completed in 1.534 seconds
+  Running test No. 5
+  Leave One Out Test completed in 1.544 seconds
+  Running test No. 6
+  Leave One Out Test completed in 1.554 seconds
+  Running test No. 7
+  Leave One Out Test completed in 1.547 seconds
+  Running test No. 8
+  Leave One Out Test completed in 1.568 seconds
+  Running test No. 9
+  Leave One Out Test completed in 1.586 seconds
+  Running test No. 10
+  Leave One Out Test completed in 1.631 seconds
+  The average run time is: 1.6457 seconds

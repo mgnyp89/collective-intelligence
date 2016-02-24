@@ -1,6 +1,7 @@
 package math;
 
 import model.UserCollection;
+
 import java.util.Optional;
 
 public class StatisticsPresenter {
@@ -44,7 +45,6 @@ public class StatisticsPresenter {
     public Optional<Integer> getMaximumRatingCountForItems(UserCollection userCollection) {
         return StatisticsHelper.calculateMinimum(userCollection.getRatingsDistributionPerItem());
     }
-
 
     /**
      *
@@ -111,5 +111,19 @@ public class StatisticsPresenter {
         double allPossibleRatings = userCollection.getUsersCount() * userCollection.getTotalMoviesCount();
 
         return totalRatings / allPossibleRatings;
+    }
+
+    /**
+     *
+     * @param userCollection
+     * @param userId
+     * @param itemId
+     * @return the average rating for this item calculated across all ratings for this item, other that the rating
+     * given by the specific user_id.
+     */
+    public double getMeanItemRatingLeaveOneOut(String userId, String itemId, UserCollection userCollection) throws
+        IllegalStateException {
+        // get a collection of all ratings excluding the one given by userId
+        return StatisticsHelper.calculateMean(userCollection.getRatingCollectionForItemLeavingOneOut(itemId, userId));
     }
 }

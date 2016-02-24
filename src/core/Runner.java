@@ -2,7 +2,7 @@ package core;
 
 import data.DatasetReader;
 import data.DatasetReaderCSV;
-import evaluation.Evaluator;
+import evaluation.LeaveOneOutEvaluator;
 import model.UserCollection;
 
 /**
@@ -26,12 +26,20 @@ public class Runner {
         System.out.println("Loaded dataset movies");
         System.out.println("*******************************");
 
-        Evaluator evaluation = new Evaluator(userCollection);
+        LeaveOneOutEvaluator leaveOneOutEvaluator = new LeaveOneOutEvaluator(userCollection);
 
-        evaluation.performBasicEvaluation();
-        evaluation.performFullStatisticalEvaluationForUsers();
-        evaluation.performFullStatisticalEvaluationForItems();
-        evaluation.displayDensityValueForDataset();
+        System.out.println("Starting evaluation");
+        System.out.println("Running test No. 1");
+        leaveOneOutEvaluator.runLeaveOneOutLoopTest();
+        leaveOneOutEvaluator.printAverageRMSE();
+        leaveOneOutEvaluator.printCoverage();
+        System.out.println("*******************************");
+        System.out.println("Starting run time evaluation");
+        for (int i = 2; i < 11 ; i++) {
+            System.out.println("Running test No. " + i);
+            leaveOneOutEvaluator.runLeaveOneOutLoopTest();
+        }
+        leaveOneOutEvaluator.printAverageRunTime();
 
     }
 

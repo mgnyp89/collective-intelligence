@@ -88,4 +88,10 @@ public class StatisticsPresenterTest {
         assertNotNull(userCollection);
         assertEquals(statisticsPresenter.getStandardDeviationRatingCountForItems(userCollection), 0.88, 0.1);
     }
+
+    @Test
+    public void getMeanItemRatingLeaveOneOutTest() {
+        assertNotNull(userCollection);
+        assertEquals(statisticsPresenter.getMeanItemRatingLeaveOneOut("187", "2", userCollection), 1.33, 0.1);
+    }
 }

@@ -60,4 +60,11 @@ public class StatisticsHelperTest {
         assertEquals(StatisticsHelper.calculateStandardDeviation(ratingsDistributionPerItem), 0, 0.1);
     }
 
+    @Test
+    public void calculateRootMeanSquareDifferencesForPairTest() {
+        assertEquals(StatisticsHelper.calculateRootMeanSquareDifferencesForPair(2, 4), 1.44, 0.1);
+        assertEquals(StatisticsHelper.calculateRootMeanSquareDifferencesForPair(2, 2), 0, 0.1);
+        assertEquals(StatisticsHelper.calculateRootMeanSquareDifferencesForPair(2, 40), 26.87, 0.1);
+    }
+
 }

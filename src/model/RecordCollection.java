@@ -11,12 +11,16 @@ public class RecordCollection {
         ratingCollection = new HashMap<>();
     }
 
-    public void addRating(String movieId, Rating rating) {
-        ratingCollection.put(movieId, rating);
+    public void addRating(String id, Rating rating) {
+        ratingCollection.put(id, rating);
     }
 
     public int getRatingsCount() {
         return ratingCollection.entrySet().size();
+    }
+
+    public Map<String, Rating> getRatingCollection() {
+        return ratingCollection;
     }
 
 }

@@ -1,19 +1,25 @@
 package evaluation;
 
 import math.StatisticsPresenter;
+
 import model.UserCollection;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Evaluator provides bundles of information about the data
+ * SimpleEvaluator provides bundles of information about the data
  */
-public class Evaluator {
+public class SimpleEvaluator {
 
     private final UserCollection USER_COLLECTION;
     private final StatisticsPresenter statisticsPresenter;
+    private List<Double> leaveOneOutTestTimings;
 
-    public Evaluator(UserCollection userCollection) {
+    public SimpleEvaluator(UserCollection userCollection) {
         USER_COLLECTION = userCollection;
         this.statisticsPresenter = new StatisticsPresenter();
+        leaveOneOutTestTimings = new ArrayList<>();
     }
 
     public void performBasicEvaluation() {
@@ -32,7 +38,7 @@ public class Evaluator {
 
         long end = System.currentTimeMillis() - start;
 
-        System.out.println("Evaluator completed in " + end + " miliseconds");
+        System.out.println("SimpleEvaluator completed in " + end + " miliseconds");
         System.out.println("*******************************");
 
     }
@@ -61,7 +67,7 @@ public class Evaluator {
 
         long end = System.currentTimeMillis() - start;
 
-        System.out.println("Evaluator completed in " + end + " miliseconds");
+        System.out.println("SimpleEvaluator completed in " + end + " miliseconds");
         System.out.println("*******************************");
 
     }
@@ -90,7 +96,7 @@ public class Evaluator {
 
         long end = System.currentTimeMillis() - start;
 
-        System.out.println("Evaluator completed in " + end + " miliseconds");
+        System.out.println("SimpleEvaluator completed in " + end + " miliseconds");
         System.out.println("*******************************");
 
     }
@@ -104,7 +110,7 @@ public class Evaluator {
 
         long end = System.currentTimeMillis() - start;
 
-        System.out.println("Evaluator completed in " + end + " miliseconds");
+        System.out.println("SimpleEvaluator completed in " + end + " miliseconds");
         System.out.println("*******************************");
     }
 

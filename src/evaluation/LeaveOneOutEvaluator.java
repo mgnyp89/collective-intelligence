@@ -79,7 +79,6 @@ public class LeaveOneOutEvaluator {
 
                         writer.write(printLeaveOneOutPredictionEntry(userId, itemId, actualRating, predictedRating, rmse));
                     } catch (IllegalStateException e) {
-                        // don't take any action: simply skip entries that can not be evaluated
                         impossiblePredictionsCount++;
                     }
                 }

@@ -2,7 +2,7 @@ package core;
 
 import data.DatasetReader;
 import data.DatasetReaderCSV;
-import evaluation.LeaveOneOutEvaluator;
+import evaluation.DistanceBasedPredictionEvaluator;
 import model.UserCollection;
 
 /**
@@ -26,21 +26,22 @@ public class Runner {
         System.out.println("Loaded dataset movies");
         System.out.println("*******************************");
 
-        LeaveOneOutEvaluator leaveOneOutEvaluator = new LeaveOneOutEvaluator(userCollection);
+        DistanceBasedPredictionEvaluator distanceBasedPredictionEvaluator = new DistanceBasedPredictionEvaluator(userCollection);
 
         System.out.println("Starting evaluation");
         System.out.println("Running test No. 1");
-        leaveOneOutEvaluator.runLeaveOneOutLoopTest();
-        leaveOneOutEvaluator.printAverageRMSE();
-        leaveOneOutEvaluator.printCoverage();
+
+        int neighbourhoodSize = 400;
+
+        distanceBasedPredictionEvaluator.runLeaveOneOutLoopTest(neighbourhoodSize);
+        distanceBasedPredictionEvaluator.printAverageRMSE();
+        distanceBasedPredictionEvaluator.printCoverage();
         System.out.println("*******************************");
         System.out.println("Starting run time evaluation");
         for (int i = 2; i < 11 ; i++) {
-            System.out.println("Running test No. " + i);
-            leaveOneOutEvaluator.runLeaveOneOutLoopTest();
+            distanceBasedPredictionEvaluator.runLeaveOneOutLoopTest(neighbourhoodSize);
         }
-        leaveOneOutEvaluator.printAverageRunTime();
-
+        distanceBasedPredictionEvaluator.printAverageRunTime();
     }
 
 }

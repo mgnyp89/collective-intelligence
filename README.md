@@ -99,3 +99,28 @@ All tests are in ./tst, they depend on junit
   Running test No. 10
   Leave One Out Test completed in 1.631 seconds
   The average run time is: 1.6457 seconds
+
+  Week 3: data written to standard output + a .cvs file with all predictions (in the ./resources) per each neighbourhood
+  size that was tested (5, 10, 30, 50, 100, 150, 200, 400, 1000)
+
+  Loading the data
+  Loaded dataset movies
+  *******************************
+  Starting evaluation
+  Running test No. 1
+  Leave One Out Test completed in 9.935 seconds
+  The average RMSE is: 0.2832
+  The coverage value is: 99.9895 %
+  *******************************
+  Starting run time evaluation
+  Leave One Out Test completed in 8.846 seconds
+  Leave One Out Test completed in 9.137 seconds
+  Leave One Out Test completed in 8.873 seconds
+  Leave One Out Test completed in 9.286 seconds
+  Leave One Out Test completed in 8.701 seconds
+  Leave One Out Test completed in 8.595 seconds
+  Leave One Out Test completed in 8.838 seconds
+  Leave One Out Test completed in 8.477 seconds
+  Leave One Out Test completed in 8.601 seconds
+  The average run time is: 8.9289 seconds
+

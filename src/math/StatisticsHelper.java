@@ -49,16 +49,21 @@ public class StatisticsHelper {
         return Math.sqrt(variance);
     }
 
-    public static double calculateRootMeanSquareDifferences(List<Integer> ratings1, List<Integer> ratings2) {
+    public static double calculateMeanSquareDifferences(List<Integer> ratings1, List<Integer> ratings2) {
         if (ratings1.size() != ratings2.size()) {
             throw new IllegalStateException("number of corresponding ratings does not match");
+        }
+
+        if (ratings1.size() == 0 || ratings2.size() == 0) {
+            return 0.0;
         }
 
         double squaredDifferencesSum = 0;
         for (int i = 0; i < ratings1.size(); i++) {
             squaredDifferencesSum += Math.pow(ratings1.get(i) - ratings2.get(i), 2);
         }
-        return Math.sqrt(squaredDifferencesSum / ratings1.size());
+     //   System.out.println("sq  "+squaredDifferencesSum+"  size  "+ratings1.size());
+        return squaredDifferencesSum / ratings1.size();
     }
 
     public static double calculateRootMeanSquareDifferencesForPair(double value1, double value2) {

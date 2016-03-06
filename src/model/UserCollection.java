@@ -24,6 +24,9 @@ public class UserCollection {
     private List<Integer> ratingsDistributionPerItem;
     private int[] ratingClasses = null;
 
+    private int maxRating = Integer.MIN_VALUE;
+    private int minRating = Integer.MAX_VALUE;
+
     public UserCollection() {
         this.userCollection = new HashMap<>();
         this.movieCollection = new HashMap<>();
@@ -47,6 +50,10 @@ public class UserCollection {
      * @param rating movie rating (numeric rating + timestamp)
      */
     public void addRecord(String userId, String movieId, Rating rating) {
+
+        if (rating.getRating() > maxRating) maxRating = rating.getRating();
+        if (rating.getRating() < minRating) minRating = rating.getRating();
+
         if (movieRatings.containsKey(movieId)) {
             movieRatings.get(movieId).add(rating);
         }
@@ -75,7 +82,10 @@ public class UserCollection {
     }
 
     public int getRecordRating(String userId, String itemId) {
-        return movieCollection.get(itemId).getRatingCollection().get(userId).getRating();
+        if (movieCollection.containsKey(itemId) && movieCollection.get(itemId).getRatingCollection().containsKey(userId)) {
+            return movieCollection.get(itemId).getRatingCollection().get(userId).getRating();
+        }
+        return -1;
     }
 
     /**
@@ -93,6 +103,11 @@ public class UserCollection {
     public int getTotalRatingsCount() {
         return movieRatings.values().stream().mapToInt(value -> value.size()).sum();
     }
+
+    public double calculateMaxDiff() {
+        return Math.pow((double) maxRating - minRating, 2);
+    }
+
 
     public int getRatingCountForRatingClass(int ratingClass) {
         if (ratingClasses == null) {

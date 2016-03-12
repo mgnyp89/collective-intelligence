@@ -62,8 +62,28 @@ public class StatisticsHelper {
         for (int i = 0; i < ratings1.size(); i++) {
             squaredDifferencesSum += Math.pow(ratings1.get(i) - ratings2.get(i), 2);
         }
-     //   System.out.println("sq  "+squaredDifferencesSum+"  size  "+ratings1.size());
         return squaredDifferencesSum / ratings1.size();
+    }
+
+    public static double calculatCosineSquareDifferences(List<Integer> ratings1, List<Integer> ratings2) {
+        if (ratings1.size() != ratings2.size()) {
+            throw new IllegalStateException("number of corresponding ratings does not match");
+        }
+
+        if (ratings1.size() == 0 || ratings2.size() == 0) {
+            return 0.0;
+        }
+
+        double ratingsSum = 0;
+        double ratings1SquaredSum = 0.0;
+        double ratings2SquaredSum = 0.0;
+        for (int i = 0; i < ratings1.size(); i++) {
+            ratingsSum += ratings1.get(i) * ratings2.get(i);
+            ratings1SquaredSum += Math.pow(ratings1.get(i), 2);
+            ratings2SquaredSum += Math.pow(ratings2.get(i), 2);
+        }
+
+        return  ratingsSum / Math.sqrt(ratings1SquaredSum) * Math.sqrt(ratings2SquaredSum);
     }
 
     public static double calculateRootMeanSquareDifferencesForPair(double value1, double value2) {

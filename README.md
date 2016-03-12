@@ -124,3 +124,63 @@ All tests are in ./tst, they depend on junit
   Leave One Out Test completed in 8.601 seconds
   The average run time is: 8.9289 seconds
 
+  Week 4: data written to standard output + a .cvs file with all predictions (in the ./resources) per each neighbourhood
+  size that was tested (5, 10, 30, 50, 100, 150, 200, 400, 1000)
+
+  Loading the data
+  Loaded dataset movies
+  *******************************
+  Starting evaluation
+  Neighbourhood size:  5
+  Leave One Out Test completed in 4.915 seconds
+  The average RMSE is: 1.1443
+  The coverage value is: 95.0062 %
+  *******************************
+  Neighbourhood size:  10
+  Leave One Out Test completed in 4.718 seconds
+  The average RMSE is: 1.0485
+  The coverage value is: 96.3262 %
+  *******************************
+  Neighbourhood size:  30
+  Leave One Out Test completed in 4.88 seconds
+  The average RMSE is: 0.8772
+  The coverage value is: 98.8211 %
+  *******************************
+  Neighbourhood size:  50
+  Leave One Out Test completed in 5.048 seconds
+  The average RMSE is: 0.7768
+  The coverage value is: 99.505 %
+  *******************************
+  Neighbourhood size:  100
+  Leave One Out Test completed in 5.494 seconds
+  The average RMSE is: 0.686
+  The coverage value is: 99.8582 %
+  *******************************
+  Neighbourhood size:  150
+  Leave One Out Test completed in 5.81 seconds
+  The average RMSE is: 0.6197
+  The coverage value is: 99.9364 %
+  *******************************
+  Neighbourhood size:  200
+  Leave One Out Test completed in 6.206 seconds
+  The average RMSE is: 0.5707
+  The coverage value is: 99.9604 %
+  *******************************
+  Neighbourhood size:  300
+  Leave One Out Test completed in 6.974 seconds
+  The average RMSE is: 0.5305
+  The coverage value is: 99.978 %
+  *******************************
+  Neighbourhood size:  400
+  Leave One Out Test completed in 8.658 seconds
+  The average RMSE is: 0.4982
+  The coverage value is: 99.9844 %
+  *******************************
+  Neighbourhood size:  1000
+  Leave One Out Test completed in 8.328 seconds
+  The average RMSE is: 0.4724
+  The coverage value is: 99.9895 %
+  *******************************
+  cosineDistanceBasedPredictionEvaluator:
+  The average run time is: 6.1031 seconds
+

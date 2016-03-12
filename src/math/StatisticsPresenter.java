@@ -153,7 +153,36 @@ public class StatisticsPresenter {
             String otherUser = entry.getKey();
             // don't compare the user to himself
             if (!userId.equals(otherUser)) {
-                double similarity = getSimilarityOfUsers(userItemRatings.getRatingCollection(),
+                double similarity = getSimpleDistanceSimilarityOfUsers(userItemRatings.getRatingCollection(),
+                        entry.getValue().getRatingCollection());
+                similarUsers.put(similarity, otherUser);
+            }
+        }
+
+        return similarUsers;
+    }
+
+    /**
+     *
+     * @param userId
+     * @param userCollection
+     * @return
+     */
+    public TreeMap<Double, String> getListOfSimilarUsersUsingCosine(String userId, UserCollection userCollection) {
+        // we need these sorted
+        TreeMap<Double, String> similarUsers = new TreeMap<>();
+
+        // calculate similarity between userId and every other user in the collection
+        Map<String, RecordCollection> users = userCollection.getUserCollection();
+
+        // get all items rated by userId
+        RecordCollection userItemRatings = users.get(userId);
+
+        for (Map.Entry<String, RecordCollection> entry : users.entrySet()) {
+            String otherUser = entry.getKey();
+            // don't compare the user to himself
+            if (!userId.equals(otherUser)) {
+                double similarity = getCosineDistanceSimilarityOfUsers(userItemRatings.getRatingCollection(),
                         entry.getValue().getRatingCollection());
                 similarUsers.put(similarity, otherUser);
             }
@@ -170,8 +199,8 @@ public class StatisticsPresenter {
      * @param userCollection original dataset
      * @return
      */
-    public double getPrediction(String itemId, int neighbourhoodSize,
-                                TreeMap<Double, String> similarUsers, UserCollection userCollection) {
+    public double getDistanceBasedPrediction(String itemId, int neighbourhoodSize,
+                                             TreeMap<Double, String> similarUsers, UserCollection userCollection) {
 
         double distance;
         double distanceSum = 0.0;
@@ -202,7 +231,59 @@ public class StatisticsPresenter {
         return distanceByRatingSum / distanceSum;
     }
 
-    private double getSimilarityOfUsers(Map<String, Rating> itemRatings1, Map<String, Rating> itemRatings2) {
+    public double getCosineSimilarityBasedPrediction(String itemId, int neighbourhoodSize,
+                                             TreeMap<Double, String> similarUsers, UserCollection userCollection) {
+        double distance;
+        double distanceSum = 0.0;
+        double distanceByRatingSum = 0.0;
+
+        double maxDiff = userCollection.calculateMaxDiff();
+
+        // get the desired neighbourhood
+        for (Map.Entry<Double, String> entry : similarUsers.descendingMap().entrySet()) {
+            // get simple distance between the users
+            distance = getDistance(entry.getKey(), maxDiff);
+
+            // check if the user we are calculating distance to has rated the item we are interested in
+            int itemRating = userCollection.getRecordRating(entry.getValue(), itemId);
+            if (itemRating > -1) {
+
+                distanceSum += distance;
+                distance *= (double) itemRating;
+                distanceByRatingSum += distance;
+            }
+
+            if (--neighbourhoodSize == 0 ) break;
+        }
+
+        if (distanceSum == 0.0 || distanceByRatingSum == 0.0) {
+            throw new IllegalStateException("Can't compare!");
+        }
+        return distanceByRatingSum / distanceSum;
+    }
+
+    private double getSimpleDistanceSimilarityOfUsers(Map<String, Rating> itemRatings1, Map<String, Rating> itemRatings2) {
+        // get lists of ratings for items that both users have rated (items in common)
+
+        List<Integer> commonRatingsUser1 = new ArrayList<>();
+        List<Integer> commonRatingsUser2 = new ArrayList<>();
+
+        // get ratings for items that both users have rated
+        for (Map.Entry<String, Rating> entry : itemRatings1.entrySet()) {
+            String otherUser = entry.getKey();
+            // only compare if the key is found in both maps
+            if (itemRatings2.containsKey(otherUser)) {
+                // rating of item k for user1
+                commonRatingsUser1.add(entry.getValue().getRating());
+                // rating of item k for user2
+                commonRatingsUser2.add(itemRatings2.get(otherUser).getRating());
+            }
+        }
+        // get the similarity measure based on mean square differences
+        return StatisticsHelper.calculateMeanSquareDifferences(commonRatingsUser1, commonRatingsUser2);
+    }
+
+    private double getCosineDistanceSimilarityOfUsers(Map<String, Rating> itemRatings1, Map<String, Rating> itemRatings2) {
         // get lists of ratings for items that both users have rated (items in common)
 
         List<Integer> commonRatingsUser1 = new ArrayList<>();

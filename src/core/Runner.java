@@ -2,6 +2,7 @@ package core;
 
 import data.DatasetReader;
 import data.DatasetReaderCSV;
+import evaluation.CosineDistanceBasedPredictionEvaluator;
 import evaluation.DistanceBasedPredictionEvaluator;
 import model.UserCollection;
 
@@ -26,22 +27,22 @@ public class Runner {
         System.out.println("Loaded dataset movies");
         System.out.println("*******************************");
 
-        DistanceBasedPredictionEvaluator distanceBasedPredictionEvaluator = new DistanceBasedPredictionEvaluator(userCollection);
+        CosineDistanceBasedPredictionEvaluator cosineDistanceBasedPredictionEvaluator =
+                new CosineDistanceBasedPredictionEvaluator(userCollection);
 
         System.out.println("Starting evaluation");
-        System.out.println("Running test No. 1");
+        int[] neighbourhoodSize = new int[] { 5, 10, 30, 50, 100, 150, 200, 300, 400, 1000 };
 
-        int neighbourhoodSize = 400;
 
-        distanceBasedPredictionEvaluator.runLeaveOneOutLoopTest(neighbourhoodSize);
-        distanceBasedPredictionEvaluator.printAverageRMSE();
-        distanceBasedPredictionEvaluator.printCoverage();
-        System.out.println("*******************************");
-        System.out.println("Starting run time evaluation");
-        for (int i = 2; i < 11 ; i++) {
-            distanceBasedPredictionEvaluator.runLeaveOneOutLoopTest(neighbourhoodSize);
+        for (int i = 0; i < neighbourhoodSize.length ; i++) {
+            System.out.println("Neighbourhood size:  "+neighbourhoodSize[i]);
+            cosineDistanceBasedPredictionEvaluator.runLeaveOneOutLoopTest(neighbourhoodSize[i]);
+            cosineDistanceBasedPredictionEvaluator.printAverageRMSE();
+            cosineDistanceBasedPredictionEvaluator.printCoverage();
+            System.out.println("*******************************");
         }
-        distanceBasedPredictionEvaluator.printAverageRunTime();
+        System.out.println("cosineDistanceBasedPredictionEvaluator:");
+        cosineDistanceBasedPredictionEvaluator.printAverageRunTime();
     }
 
 }

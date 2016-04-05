@@ -5,6 +5,7 @@ import model.RecordCollection;
 import model.UserCollection;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -262,6 +263,70 @@ public class StatisticsPresenter {
         return distanceByRatingSum / distanceSum;
     }
 
+    public double getResnicksPrediction(String userId, String itemId, int neighbourhoodSize,
+                                                     TreeMap<Double, String> similarUsers, UserCollection userCollection) {
+        double summedRatingsForTargetItem = 0.0;
+        double similarity = 0.0;
+        double absoluteSimilarirySumOfUsers = 0.0;
+
+        double meanOfRatingsForUser = meanRatingForUser(userCollection, userId);
+
+        // get the desired neighbourhood
+        for (Map.Entry<Double, String> entry : similarUsers.descendingMap().entrySet()) {
+            String user2 = entry.getValue();
+
+            similarity = getPearsonsCoeffient(userId, user2, userCollection);
+            absoluteSimilarirySumOfUsers += Math.abs(similarity);
+
+            // check if the user we are calculating the similarity to has rated the item
+            int itemRating = userCollection.getRecordRating(user2, itemId);
+            if (itemRating > -1) {
+                summedRatingsForTargetItem += ( userCollection.getRecordRating(user2, itemId) - meanRatingForUser(userCollection, user2)) * similarity;
+            }
+
+            if (--neighbourhoodSize == 0 ) break;
+        }
+
+        return meanOfRatingsForUser + (summedRatingsForTargetItem / absoluteSimilarirySumOfUsers);
+    }
+
+    public double getPearsonsCoeffient(String user1, String user2, UserCollection userCollection) {
+        double sumOfCoratedItemPredictionsForBothUsers = 0.0;
+        double itemRatingMinusMeanForUser1 = 0.0;
+        double itemRatingMinusMeanForUser2 = 0.0;
+
+        double sumOfRatingsForUSer1Squared = 0.0;
+        double sumOfRatingsForUSer2Squared = 0.0;
+
+        double meanRatingUser1 = meanRatingForUser(userCollection, user1);
+        double meanRatingUser2 = meanRatingForUser(userCollection, user2);
+
+        Map<String, Rating> ratingsCollectionUser1 = userCollection.getUserCollection().get(user1).getRatingCollection();
+        Map<String, Rating> ratingsCollectionUser2 = userCollection.getUserCollection().get(user2).getRatingCollection();
+
+        // get ratings for items that both users have rated
+        for (Map.Entry<String, Rating> entry : ratingsCollectionUser1.entrySet()) {
+            String item = entry.getKey();
+            // only compare if the key is found in both maps
+            if (ratingsCollectionUser2.containsKey(item)) {
+                // rating of item k for user1 - mean of the ratings for that user
+                itemRatingMinusMeanForUser1 = entry.getValue().getRating() - meanRatingUser1;
+                // rating of item k for user1 - mean of the ratings for that user
+                itemRatingMinusMeanForUser2 = ratingsCollectionUser2.get(item).getRating() - meanRatingUser2;
+
+                sumOfCoratedItemPredictionsForBothUsers += itemRatingMinusMeanForUser1 * itemRatingMinusMeanForUser2;
+
+                sumOfRatingsForUSer1Squared += Math.pow(itemRatingMinusMeanForUser1, 2);
+                sumOfRatingsForUSer2Squared += Math.pow(itemRatingMinusMeanForUser2, 2);
+
+            }
+        }
+
+        double sqrtOfSummedRatings = Math.sqrt(sumOfRatingsForUSer1Squared) * Math.sqrt(sumOfRatingsForUSer2Squared);
+    //    System.out.println("Done perasons");
+        return sumOfCoratedItemPredictionsForBothUsers / sqrtOfSummedRatings;
+    }
+
     private double getSimpleDistanceSimilarityOfUsers(Map<String, Rating> itemRatings1, Map<String, Rating> itemRatings2) {
         // get lists of ratings for items that both users have rated (items in common)
 
@@ -306,5 +371,14 @@ public class StatisticsPresenter {
 
     private double getDistance(double similarity, double maxDiff) {
         return (1 - similarity) / maxDiff;
+    }
+
+    private double meanRatingForUser(UserCollection userCollection, String userId) {
+        Collection<Rating> ratings = userCollection.getUserCollection().get(userId).getRatingCollection().values();
+        List<Integer> ratingValues = new ArrayList<>();
+        for (Rating rating: ratings) {
+            ratingValues.add(rating.getRating());
+        }
+        return StatisticsHelper.calculateMean(ratingValues);
     }
 }

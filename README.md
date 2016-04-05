@@ -184,3 +184,56 @@ All tests are in ./tst, they depend on junit
   cosineDistanceBasedPredictionEvaluator:
   The average run time is: 6.1031 seconds
 
+   Week 5: data written to standard output + a .cvs file with all predictions (in the ./resources) per each neighbourhood
+   size that was tested (5, 10, 30, 50, 100, 150, 200, 400, 1000)
+
+   *******************************
+   Neighbourhood size:  5
+   Leave One Out Test completed in 10.145 seconds
+   The average RMSE is: 0.1607
+   The coverage value is: 100 %
+   *******************************
+   Neighbourhood size:  10
+   Leave One Out Test completed in 15.062 seconds
+   The average RMSE is: 0.1589
+   The coverage value is: 100 %
+   *******************************
+   Neighbourhood size:  30
+   Leave One Out Test completed in 40.338 seconds
+   The average RMSE is: 0.1566
+   The coverage value is: 100 %
+   *******************************
+   Neighbourhood size:  50
+   Leave One Out Test completed in 82.73 seconds
+   The average RMSE is: 0.1552
+   The coverage value is: 100 %
+   *******************************
+   Neighbourhood size:  100
+   Leave One Out Test completed in 141.278 seconds
+   The average RMSE is: 0.154
+   The coverage value is: 100 %
+   *******************************
+   Neighbourhood size:  150
+   Leave One Out Test completed in 235.027 seconds
+   The average RMSE is: 0.1529
+   The coverage value is: 100 %
+   *******************************
+   Neighbourhood size:  200
+   Leave One Out Test completed in 330.726 seconds
+   The average RMSE is: 0.1516
+   The coverage value is: 100 %
+   *******************************
+   Neighbourhood size:  300
+   Leave One Out Test completed in 524.436 seconds
+   The average RMSE is: 0.1495
+   The coverage value is: 100 %
+   *******************************
+   Neighbourhood size:  400
+   Leave One Out Test completed in 687.589 seconds
+   The average RMSE is: 0.147
+   The coverage value is: 100 %
+   *******************************
+   Neighbourhood size:  1000
+   Leave One Out Test completed in 1030.985 seconds
+   The average RMSE is: 0.1413
+   The coverage value is: 100 %

@@ -2,8 +2,7 @@ package core;
 
 import data.DatasetReader;
 import data.DatasetReaderCSV;
-import evaluation.CosineDistanceBasedPredictionEvaluator;
-import evaluation.DistanceBasedPredictionEvaluator;
+import evaluation.ResnicksEvaluator;
 import model.UserCollection;
 
 /**
@@ -14,7 +13,6 @@ public class Runner {
     private final static String MOVIES_FILE_PATH = "./resources/100k.csv";
 
     public static void main(String args[]) {
-        System.out.println("Loading the data");
         DatasetReader datasetReaderCSV = new DatasetReaderCSV();
         UserCollection userCollection = null;
         try {
@@ -24,25 +22,23 @@ public class Runner {
             System.exit(1);
         }
 
-        System.out.println("Loaded dataset movies");
-        System.out.println("*******************************");
-
-        CosineDistanceBasedPredictionEvaluator cosineDistanceBasedPredictionEvaluator =
-                new CosineDistanceBasedPredictionEvaluator(userCollection);
-
-        System.out.println("Starting evaluation");
         int[] neighbourhoodSize = new int[] { 5, 10, 30, 50, 100, 150, 200, 300, 400, 1000 };
 
+        ResnicksEvaluator resnicksEvaluator =
+                new ResnicksEvaluator(userCollection);
+
+        System.out.println("Starting evaluation using pearson's coefficient based prediction with Resnick's formula");
 
         for (int i = 0; i < neighbourhoodSize.length ; i++) {
-            System.out.println("Neighbourhood size:  "+neighbourhoodSize[i]);
-            cosineDistanceBasedPredictionEvaluator.runLeaveOneOutLoopTest(neighbourhoodSize[i]);
-            cosineDistanceBasedPredictionEvaluator.printAverageRMSE();
-            cosineDistanceBasedPredictionEvaluator.printCoverage();
             System.out.println("*******************************");
+            System.out.println("Neighbourhood size:  "+neighbourhoodSize[i]);
+            resnicksEvaluator.runLeaveOneOutLoopTest(neighbourhoodSize[i]);
+            resnicksEvaluator.printAverageRMSE();
+            resnicksEvaluator.printCoverage();
         }
-        System.out.println("cosineDistanceBasedPredictionEvaluator:");
-        cosineDistanceBasedPredictionEvaluator.printAverageRunTime();
+        System.out.println("ResnicksEvaluator average run time over " +
+                neighbourhoodSize.length  + " runs:");
+        resnicksEvaluator.printAverageRunTime();
     }
 
 }
